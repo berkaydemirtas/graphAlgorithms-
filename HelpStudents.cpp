@@ -1,15 +1,15 @@
 /*
-Student Name:
-Student Number:
+Student Name:Berkay Demirtaş
+Student Number:2017400234
 Project Number: 4
-Compile Status: [SUCCESS/FAIL]
-Running Status: [SUCCESS/FAIL]
+Compile Status: [SUCCESS]
+Running Status: [SUCCESS]
 Notes: Anything you want to say about your code that will be helpful in the grading process.
 */
 #include <set>
 #include "HelpStudents.h"
 #include <queue>
-
+#include <zconf.h>
 
 
 using namespace std;
@@ -220,6 +220,7 @@ long long int HelpStudents::fourthStudent() {
 
 
 
+
             count++;
 
             if(dist==min){
@@ -263,7 +264,127 @@ long long int HelpStudents::fourthStudent() {
 
 }
 long long int HelpStudents::fifthStudent() {
-    // IMPLEMENT ME!
+
+
+    int power=0;
+    int c=1;
+
+    set<pair<long long int,long long int>,less<>> s;
+
+
+    s.insert(make_pair(0,1));
+    while(!s.empty()){
+
+        pair<long long int ,long long int> tmp=*(s.begin());
+        s.erase(s.begin());
+        list< pair<long long int, long long int> >::iterator i;
+
+        for ( i = adjacencyList[tmp.second].begin(); i != adjacencyList[tmp.second].end(); ++i) {
+
+            long long int vertice = (*i).first;
+            long long int dist = (*i).second;
+
+            if (power % 3 == 1) {
+
+                if (distance[vertice] > distance[tmp.second] + dist) {
+
+                    s.erase(s.find(make_pair(distance[vertice], vertice)));
+                    distance[vertice] = distance[tmp.second] + dist;
+
+                    s.insert(make_pair(distance[vertice], vertice));
+                    adjacencyList[tmp.second].remove(make_pair(vertice,dist));
+
+
+                } else if (distance[vertice] == 0) {
+                    distance[vertice] = distance[tmp.second] + dist;
+                    s.insert(make_pair(distance[vertice], vertice));
+                    adjacencyList[tmp.second].remove(make_pair(vertice,dist));
+                }
+
+            }
+
+            if(power%3==2){
+                if(distance[vertice]>distance[tmp.second]){
+
+                    s.erase(s.find(make_pair(distance[vertice], vertice)));
+                    distance[vertice] = distance[tmp.second] ;
+
+                    s.insert(make_pair(distance[vertice], vertice));
+                    adjacencyList[tmp.second].remove(make_pair(vertice,dist));
+
+                }
+
+                else if(distance[vertice]==0){
+                    distance[vertice]=distance[tmp.second];
+                    adjacencyList[tmp.second].remove(make_pair(vertice,dist));
+                    s.insert(make_pair(distance[vertice], vertice));
+
+                }
+
+            }
+            if(power%3==0 ){
+
+                long long int a=minEdge(adjacencyList,tmp.second);
+
+                if(2*a<dist){
+
+                    if(2*a+distance[tmp.second]<distance[vertice]){
+
+                        distance[vertice]=2*a+distance[tmp.second];
+                        adjacencyList[tmp.second].remove(make_pair(vertice,dist));
+                        s.insert(make_pair(distance[vertice], vertice));
+
+                    }
+
+
+                }
+
+                if(distance[vertice]==0){
+                    distance[vertice]=2*a+distance[tmp.second];
+                    adjacencyList[tmp.second].remove(make_pair(vertice,dist));
+                    s.insert(make_pair(distance[vertice], vertice));
+
+                }
+
+
+            }
+        }
+
+
+        power++;
+
+    }
+
+
+
+return distance[goal];
+
+
+
+
+
+}
+
+long long int HelpStudents:: minEdge(list< pair<long long int,long long int> > *adjacencyList,int element){
+
+    list< pair<long long int, long long int> >::iterator i;
+
+    long long int min=LONG_LONG_MAX;
+    for ( i = adjacencyList[element].begin(); i != adjacencyList[element].end(); ++i){
+
+        if((*i).second<min){
+
+            min=(*i).second;
+
+        }
+
+
+
+
+    }
+
+
+    return min;
 }
 
 // YOU CAN ADD YOUR HELPER FUNCTIONS

@@ -2,13 +2,19 @@
 #include <utility> 
 #include <sstream>
 #include "HelpStudents.h"
+#include <chrono>
 using namespace std;
+
+
+
+
 
 void parseInput(ifstream& inFile,int &  Student,int &  N,int &  M, int & K,  vector < pair< pair <int,int> , int > > & ways);
 
 
 int main(int argc, char* argv[]){
 
+    std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
     // Command line arguments are malformed
     if (argc != 3) {
         // cerr should be used for errors
@@ -46,6 +52,10 @@ int main(int argc, char* argv[]){
         outFile << solver.fifthStudent() << endl;
 
     outFile.close();
+
+    std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+    std::cout << "Time difference = " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() << "[µs]" << std::endl;
+
 	return 0;
 }
 
