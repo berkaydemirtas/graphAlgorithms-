@@ -358,22 +358,22 @@ long long int HelpStudents::fifthStudent() {
 
                 if(2*a<dist) {
 
-                    if (2 * a + distance[tmp.first.second] < distance1[vertice]) {
+                    if (2 * a + distance[tmp.first.second] < distance[vertice]) {
 
                       //  s.erase(s.find(make_pair(make_pair(distance[vertice], vertice),0)));
-                        distance1[vertice] = 2 * a + distance[tmp.first.second];
+                        distance[vertice] = 2 * a + distance[tmp.first.second];
                       //  neig[vertice]=tmp.first.second;
                         //adjacencyList[tmp.second].remove(make_pair(vertice, dist));
-                        s.insert(make_pair(make_pair(distance1[vertice], vertice),1));
+                        s.insert(make_pair(make_pair(distance[vertice], vertice),0));
 
                     }
 
 
                    else if (distance[vertice] == 0) {
-                        distance1[vertice] = 2 * a + distance[tmp.first.second];
+                        distance[vertice] = 2 * a + distance[tmp.first.second];
                         //neig[vertice]=tmp.first.second;
                       //  adjacencyList[tmp.second].remove(make_pair(vertice, dist));
-                        s.insert(make_pair(make_pair(distance1[vertice], vertice),1));
+                        s.insert(make_pair(make_pair(distance[vertice], vertice),0));
 
                     }
 
