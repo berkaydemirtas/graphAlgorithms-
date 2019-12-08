@@ -265,99 +265,177 @@ long long int HelpStudents::fourthStudent() {
 }
 long long int HelpStudents::fifthStudent() {
 
+    vector <long long int> distance1;
+    distance1.resize(node+1);
+    vector <long long int> distance2;
+    distance2.resize(node+1);
+    vector <long long int> neig2;
+    neig2.resize(node+1);
+    vector <long long int> neig3;
+    neig3.resize(node+1);
 
-    int power=0;
-    int c=1;
+    for(int i=0;i<node+1;i++){
 
-    set<pair<long long int,long long int>,less<>> s;
+        distance1[i]=0;
+        distance2[i]=0;
+        neig2[i]=0;
+        neig[i]=0;
 
-
-    s.insert(make_pair(0,1));
-    while(!s.empty()){
-
-        pair<long long int ,long long int> tmp=*(s.begin());
-        s.erase(s.begin());
-        list< pair<long long int, long long int> >::iterator i;
-
-        for ( i = adjacencyList[tmp.second].begin(); i != adjacencyList[tmp.second].end(); ++i) {
-
-            long long int vertice = (*i).first;
-            long long int dist = (*i).second;
-
-            if (power % 3 == 1) {
-
-                if (distance[vertice] > distance[tmp.second] + dist) {
-
-                    s.erase(s.find(make_pair(distance[vertice], vertice)));
-                    distance[vertice] = distance[tmp.second] + dist;
-
-                    s.insert(make_pair(distance[vertice], vertice));
-                    adjacencyList[tmp.second].remove(make_pair(vertice,dist));
-
-
-                } else if (distance[vertice] == 0) {
-                    distance[vertice] = distance[tmp.second] + dist;
-                    s.insert(make_pair(distance[vertice], vertice));
-                    adjacencyList[tmp.second].remove(make_pair(vertice,dist));
-                }
-
-            }
-
-            if(power%3==2){
-                if(distance[vertice]>distance[tmp.second]){
-
-                    s.erase(s.find(make_pair(distance[vertice], vertice)));
-                    distance[vertice] = distance[tmp.second] ;
-
-                    s.insert(make_pair(distance[vertice], vertice));
-                    adjacencyList[tmp.second].remove(make_pair(vertice,dist));
-
-                }
-
-                else if(distance[vertice]==0){
-                    distance[vertice]=distance[tmp.second];
-                    adjacencyList[tmp.second].remove(make_pair(vertice,dist));
-                    s.insert(make_pair(distance[vertice], vertice));
-
-                }
-
-            }
-            if(power%3==0 ){
-
-                long long int a=minEdge(adjacencyList,tmp.second);
-
-                if(2*a<dist){
-
-                    if(2*a+distance[tmp.second]<distance[vertice]){
-
-                        distance[vertice]=2*a+distance[tmp.second];
-                        adjacencyList[tmp.second].remove(make_pair(vertice,dist));
-                        s.insert(make_pair(distance[vertice], vertice));
-
-                    }
-
-
-                }
-
-                if(distance[vertice]==0){
-                    distance[vertice]=2*a+distance[tmp.second];
-                    adjacencyList[tmp.second].remove(make_pair(vertice,dist));
-                    s.insert(make_pair(distance[vertice], vertice));
-
-                }
-
-
-            }
-        }
-
-
-        power++;
 
     }
 
 
 
-return distance[goal];
+
+    int power=0;
+    int c=1;
+
+    set<pair<pair<long long int,long long int>,int>,less<>> s;
+
+    long long int vertice;
+    long long int dist;
+    s.insert(make_pair(make_pair(0,1),0));
+    while(!s.empty()){
+
+        pair<pair<long long int ,long long int>,int> tmp=*(s.begin());
+        s.erase(s.begin());
+        list< pair<long long int, long long int> >::iterator i;
+
+        power = tmp.second;
+        for ( i = adjacencyList[tmp.first.second].begin(); i != adjacencyList[tmp.first.second].end(); ++i) {
+
+            vertice = (*i).first;
+            long long int dist = (*i).second;
+
+
+
+            if (power  == 1) {
+
+                if (distance2[vertice] > distance1[tmp.first.second] + dist) {
+
+
+                   // s.erase(s.find(make_pair(make_pair(distance1[vertice], vertice),1)));
+                    distance2[vertice] = distance1[tmp.first.second] + dist;
+                    //neig[vertice]=tmp.first.second;
+
+                    s.insert(make_pair(make_pair(distance2[vertice], vertice),2));
+                    //adjacencyList[tmp.second].remove(make_pair(vertice,dist));
+
+
+                } else if (distance2[vertice] == 0 && vertice!=1) {
+                    distance2[vertice] = distance1[tmp.first.second] + dist;
+                    //neig[vertice]=tmp.first.second;
+                    s.insert(make_pair(make_pair(distance2[vertice], vertice),2));
+                    //adjacencyList[tmp.second].remove(make_pair(vertice,dist));
+                }
+
+            }
+
+            if(power==2){
+                if(distance[vertice]>distance2[tmp.first.second]){
+
+                    //s.erase(s.find(make_pair(make_pair(distance[vertice], vertice),0)));
+                    distance[vertice] = distance2[tmp.first.second] ;
+
+                    //neig[vertice]=tmp.first.second;
+                    s.insert(make_pair(make_pair(distance[vertice], vertice),0));
+                    //adjacencyList[tmp.second].remove(make_pair(vertice,dist));
+
+                }
+
+                else if(distance[vertice]==0){
+                    distance[vertice]=distance2[tmp.first.second];
+                    //neig[vertice]=tmp.first.second;
+                    //adjacencyList[tmp.second].remove(make_pair(vertice,dist));
+                    s.insert(make_pair(make_pair(distance[vertice], vertice),0));
+
+                }
+
+            }
+            if(power==0 ){
+
+                long long int a=minEdge(adjacencyList,tmp.first.second);
+
+                if(2*a<dist) {
+
+                    if (2 * a + distance[tmp.first.second] < distance1[vertice]) {
+
+                      //  s.erase(s.find(make_pair(make_pair(distance[vertice], vertice),0)));
+                        distance1[vertice] = 2 * a + distance[tmp.first.second];
+                      //  neig[vertice]=tmp.first.second;
+                        //adjacencyList[tmp.second].remove(make_pair(vertice, dist));
+                        s.insert(make_pair(make_pair(distance1[vertice], vertice),1));
+
+                    }
+
+
+                   else if (distance[vertice] == 0) {
+                        distance1[vertice] = 2 * a + distance[tmp.first.second];
+                        //neig[vertice]=tmp.first.second;
+                      //  adjacencyList[tmp.second].remove(make_pair(vertice, dist));
+                        s.insert(make_pair(make_pair(distance1[vertice], vertice),1));
+
+                    }
+
+                }
+                else{
+
+                    if (distance1[vertice] > distance[tmp.first.second] + dist) {
+
+                        //s.erase(s.find(make_pair(make_pair(distance1[vertice], vertice),1)));
+                        distance1[vertice] = distance[tmp.first.second] + dist;
+                      //  neig[vertice]=tmp.first.second;
+
+                        s.insert(make_pair(make_pair(distance1[vertice], vertice),1));
+
+
+
+                    }
+                    else if (distance1[vertice] == 0) {
+                        distance1[vertice] = distance[tmp.first.second] + dist;
+                      //  neig[vertice]=tmp.first.second;
+                        s.insert(make_pair(make_pair(distance1[vertice], vertice),1));
+
+                    }
+
+
+
+                }
+
+            }
+        }
+
+        adjacencyList[tmp.second].remove(make_pair(vertice,dist));
+
+
+
+
+    }
+
+
+
+    long long int a=distance[goal];
+    long long int b=distance1[goal];
+    long long int d=distance2[goal];
+
+    if(a==0)
+        a=LONG_LONG_MAX;
+    if(b==0)
+        b=LONG_LONG_MAX;
+    if(d==0)
+        d=LONG_LONG_MAX;
+
+    long long int min=LONG_LONG_MAX;
+    if(a<=b)
+        min=a;
+    else
+        min=b;
+
+    if(min>=d)
+        min=d;
+
+
+return min;
 
 
 
